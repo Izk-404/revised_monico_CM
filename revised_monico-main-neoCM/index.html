@@ -159,16 +159,6 @@
           </div>
 
           <div class="input-group">
-            <label for="nameInput">名前 (Name)</label>
-            <input type="text" id="nameInput" value="" placeholder="例: はなこ">
-          </div>
-          
-          <div class="input-group">
-            <label for="goalInput">作業目的 (Goal)</label>
-            <input type="text" id="goalInput" value="" placeholder="例: 卒業論文の執筆">
-          </div>
-
-          <div class="input-group">
             <label for="toleranceInput">猶予時間 (Seconds to Trigger)</label>
             <input type="number" id="toleranceInput" value="10" min="5">
           </div>
@@ -176,8 +166,8 @@
           <div class="input-group">
             <label for="displayMode">低下ゲージの表示</label>
             <select id="displayMode">
-              <option value="gauge">ゲージ＋数値（標準）</option>
-              <option value="number">数値のみ（小さめ）</option>
+              <option value="gauge">ゲージ＋数値</option>
+              <option value="number">数値のみ</option>
               <option value="hidden">非表示</option>
             </select>
           </div>
@@ -251,8 +241,6 @@
       const stopButton = document.getElementById("stopButton");
       const testButton = document.getElementById("testButton");
       const videoSource = document.getElementById("videoSource");
-      const nameInput = document.getElementById("nameInput");
-      const goalInput = document.getElementById("goalInput");
       const toleranceInput = document.getElementById("toleranceInput");
 
       // ★追加: 表示モード切替の処理
@@ -354,14 +342,12 @@
 
       function startMonitoring() {
           clearError(); 
-          if (!nameInput.value.trim() || !goalInput.value.trim()) {
-              alert("名前と作業目的を入力してください！"); return;
-          }
-
-          // ★追加: 事前アンロックのために、まず1本目の動画を設定しておく
+          // ★「名前と作業目的を入力してください！」のチェックを丸ごと削除しました
+          // 事前アンロックのために、まず1本目の動画を設定しておく
           if (CM_VIDEO_LIST.length > 0) {
               cmVideo.src = CM_VIDEO_LIST[0];
           }
+          // ...以下略
 
           cmVideo.muted = true; 
           cmVideo.play().then(() => {
@@ -404,8 +390,6 @@
             method: "POST",
             mode: "cors",
             body: JSON.stringify({
-              name: nameInput.value.trim(),
-              goal: goalInput.value.trim(),
               reason: triggerReason
             })
           }).catch(err => console.error("ログ送信エラー:", err));
